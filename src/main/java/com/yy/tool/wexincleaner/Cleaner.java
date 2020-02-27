@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.yy.java.config.JavaConfig;
 import com.yy.log.Logger;
 import com.yy.util.FileUtil;
 import com.yy.util.PropertyUtil;
 import com.yy.util.StringUtil;
-import com.yy.web.config.SystemConfig;
 
 public class Cleaner {
 	
@@ -18,6 +18,13 @@ public class Cleaner {
 	private List<String> weixinIds;
 	
 	
+	public static void main(String[] args) {
+	
+		JavaConfig.javaInit();
+		new Cleaner().start();
+	}
+
+
 	public void start() {
 
 		init();
@@ -28,8 +35,8 @@ public class Cleaner {
 	
 	private void init() {
 		
-		Properties config = PropertyUtil.read(SystemConfig.getSystemPath() + "config.properties");
-		root = SystemConfig.formatDirRelativePath(config.getProperty("root"));
+		Properties config = PropertyUtil.read(JavaConfig.getSystemPath() + "config.properties");
+		root = JavaConfig.formatDirRelativePath(config.getProperty("root"));
 		
 		exts = new ArrayList<>();
 		for (String item : config.getProperty("exts").trim().split(",")) {
@@ -120,24 +127,5 @@ public class Cleaner {
 				Logger.printStackTrace(e);
 			}
 		}
-	}
-	
-	
-	/**
-	 * 以 Java 应用程序单独运行时的初始化操作。
-	 */
-	public static void mainInit() {
-
-		SystemConfig sys = new SystemConfig(null);
-		sys.initSystemPath();
-
-		Logger.setSystemPath(SystemConfig.getSystemPath());
-	}
-	
-
-	public static void main(String[] args) {
-
-		mainInit();
-		new Cleaner().start();
 	}
 }
