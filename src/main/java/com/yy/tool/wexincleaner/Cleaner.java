@@ -35,7 +35,7 @@ public class Cleaner {
 	
 	private void init() {
 		
-		Properties config = PropertyUtil.read(JavaConfig.getSystemPath() + "config.properties");
+		Properties config = PropertyUtil.read(JavaConfig.getConfigPath() + "config.properties");
 		root = JavaConfig.formatDirRelativePath(config.getProperty("root"));
 		
 		exts = new ArrayList<>();
@@ -91,9 +91,12 @@ public class Cleaner {
 		
 		for (String id : weixinIds) {
 			File dir = new File(root + id + "\\image2\\");
+			File[] files = dir.listFiles();
 
-			for (File file : dir.listFiles()) {
-				mergeImage2(file, dir);
+			if (files != null) {
+				for (File file : files) {
+					mergeImage2(file, dir);
+				}
 			}
 		}
 	}
@@ -102,11 +105,14 @@ public class Cleaner {
 	private void mergeImage2(File file, File moveTo) {
 		
 		if (file.isDirectory()) {
-			for (File item : file.listFiles()) {
-				mergeImage2(item, moveTo);
+			File[] files = file.listFiles();
+			if (files != null) {
+				for (File item : files) {
+					mergeImage2(item, moveTo);
+				}
 			}
 
-			if (file.listFiles().length == 0) {
+			if (files.length == 0) {
 				Logger.log("删除文件夹 " + file);
 				FileUtil.deleteDir(file);
 			}
