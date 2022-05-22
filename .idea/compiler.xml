@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="tool-weixinClear" target="1.5" />
+      <module name="tool-weixinClear" target="7" />
     </bytecodeTargetLevel>
   </component>
 </project>
